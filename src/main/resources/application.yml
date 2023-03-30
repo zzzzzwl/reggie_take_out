@@ -2,24 +2,17 @@ server:
   port: 9001
 spring:
   application:
-    name: ReggieTakeOut
-
-
-
+    name: reggie_take_out
   datasource:
     url: jdbc:mysql://localhost:3306/ruiji?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&useSSL=false&allowPublicKeyRetrieval=true
     username: root
     password: 123456
     type: com.alibaba.druid.pool.DruidDataSource
-
-
 mybatis-plus:
   configuration:
-    #在映射实体或者属性时，将数据库中表名和字段名中的下划线去掉，开启按照驼峰命名法映射
+    #在映射实体或者属性时，将数据库中表名和字段名中的下划线去掉，按照驼峰命名法映射
     map-underscore-to-camel-case: true
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
   global-config:
     db-config:
       id-type: ASSIGN_ID
-
-

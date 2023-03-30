@@ -10,6 +10,8 @@ public class ReggieTakeOutApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(ReggieTakeOutApplication.class, args);
+        log.info("程序已启动");
     }
+
 
 }
