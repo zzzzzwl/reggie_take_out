@@ -17,7 +17,6 @@ import java.sql.SQLIntegrityConstraintViolationException;
 @Slf4j
 public class GlobalExceptionHandler {
     @ExceptionHandler(SQLIntegrityConstraintViolationException.class)
-
     public R<String> exceptionHandler(SQLIntegrityConstraintViolationException ex){
         log.error(ex.getMessage());
         if(ex.getMessage().contains("Duplicate entry")){
@@ -27,5 +26,15 @@ public class GlobalExceptionHandler {
         }
 
         return R.error("未知错误");
+    }
+
+    /**
+     * 处理自定义业务异常：分类关联菜品或套餐无法删除
+     * @param ex:
+     * @return :
+     */
+    @ExceptionHandler(CustomException.class)
+    public R<String> exceptionHandler(CustomException ex){
+        return R.error(ex.getMessage());
     }
 }

@@ -67,14 +67,15 @@ public class EmployeeController {
      * @return :
      */
     @PostMapping
-    public R<String> save(HttpServletRequest request, @RequestBody Employee employee){
+    public R<String> save(@RequestBody Employee employee){
 //        log.info("新增员工:{}",employee.toString());
         //设置初始密码，需要进行md5加密
         employee.setPassword(DigestUtils.md5DigestAsHex("123456".getBytes()));
-        employee.setCreateTime(LocalDateTime.now());
-        employee.setUpdateTime(LocalDateTime.now());
-        employee.setCreateUser((Long) request.getSession().getAttribute("employee"));
-        employee.setUpdateUser((Long) request.getSession().getAttribute("employee"));
+
+//        employee.setCreateTime(LocalDateTime.now());
+//        employee.setUpdateTime(LocalDateTime.now());
+//        employee.setCreateUser((Long) request.getSession().getAttribute("employee"));
+//        employee.setUpdateUser((Long) request.getSession().getAttribute("employee"));
         employeeService.save(employee);
         return R.success("新增员工成功");
     }
