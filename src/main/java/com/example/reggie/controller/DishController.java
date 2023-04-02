@@ -9,7 +9,6 @@ import com.example.reggie.entity.Dish;
 import com.example.reggie.service.CategoryService;
 import com.example.reggie.service.DishFlavorService;
 import com.example.reggie.service.DishService;
-import com.fasterxml.jackson.databind.util.BeanUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -78,4 +77,71 @@ public class DishController {
         dishDtoPage.setRecords(list);
         return R.success(dishDtoPage);
     }
+
+    /**
+     * 根据id查询菜品信息和对应口味信息
+     * @param id:
+     * @return :
+     */
+    @GetMapping("/{id}")
+    public R<DishDto> get(@PathVariable Long id){
+        DishDto dishDto = dishService.getByIdWithFlavor(id);
+        return R.success(dishDto);
+    }
+
+    /**
+     * 修改菜品
+     * @param dishDto:
+     * @return :
+     */
+    @PutMapping
+    public R<String> update(@RequestBody DishDto dishDto){
+        dishService.updateWithFlavor(dishDto);
+        return R.success("新增菜品成功");
+    }
+
+    /**
+     * 菜品停售
+     * @param ids:
+     * @return :
+     */
+    @PostMapping("/status/0")
+    public R<String> stop(Long ids){
+        Dish dish = dishService.getById(ids);
+        dish.setStatus(0);
+        LambdaQueryWrapper<Dish> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(Dish::getId,ids);
+        dishService.update(dish,queryWrapper);
+        return R.success("菜品停售");
+    }
+
+    @PostMapping("/status/1")
+    public R<String> start(Long ids){
+        Dish dish = dishService.getById(ids);
+        dish.setStatus(1);
+        LambdaQueryWrapper<Dish> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(Dish::getId,ids);
+        dishService.update(dish,queryWrapper);
+        return R.success("菜品启售");
+    }
+
+    /**
+     * 将dish表中isDelete设置为1逻辑删除，并不是直接从数据库删除
+     * @param ids
+     * @return
+     */
+    @DeleteMapping
+    public R<String> delete(Long ids){
+        Dish dish = dishService.getById(ids);
+        dish.setIsDeleted(1);
+        LambdaQueryWrapper<Dish> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(Dish::getId,ids);
+        dishService.update(dish,queryWrapper);
+        return R.success("菜品删除成功");
+
+    }
+
+
+
+
 }

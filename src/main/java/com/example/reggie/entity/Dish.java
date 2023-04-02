@@ -49,6 +49,8 @@ public class Dish implements Serializable {
     //顺序
     private Integer sort;
 
+    private Integer isDeleted;
+
 
     @TableField(fill = FieldFill.INSERT)
     private LocalDateTime createTime;
