@@ -24,7 +24,6 @@ public class GlobalExceptionHandler {
             String msg = "账号:"+split[2]+"已存在";
             return R.error(msg);
         }
-
         return R.error("未知错误");
     }
 

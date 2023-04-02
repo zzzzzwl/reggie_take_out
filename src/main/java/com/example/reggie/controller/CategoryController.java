@@ -8,6 +8,7 @@ import com.example.reggie.service.CategoryService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
+import java.util.List;
 
 
 @RestController
@@ -69,6 +70,21 @@ public class CategoryController {
     public R<String> update(@RequestBody Category category){
         categoryService.updateById(category);
         return R.success("修改分类信息成功");
+    }
+
+
+    /**
+     * 根据条件查询分类数据
+     * @param category
+     * @return
+     */
+    @GetMapping("/list")
+    public R<List<Category>> list(Category category){
+            LambdaQueryWrapper<Category> queryWrapper = new LambdaQueryWrapper<>();
+            queryWrapper.eq(category.getType() !=null,Category::getType,category.getType());
+            queryWrapper.orderByDesc(Category::getSort).orderByDesc(Category::getUpdateTime);
+            List<Category> list = categoryService.list(queryWrapper);
+            return R.success(list);
     }
 
 }
