@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.reggie.common.R;
 import com.example.reggie.dto.SetmealDto;
 import com.example.reggie.entity.Category;
+import com.example.reggie.entity.Dish;
 import com.example.reggie.entity.Setmeal;
 import com.example.reggie.service.CategoryService;
 import com.example.reggie.service.SetmealDishService;
@@ -89,5 +90,15 @@ public class SetmealController {
     public R<String> delete(@RequestParam List<Long> ids){
         setmealService.removeWithDish(ids);
         return R.success("套餐数据删除成功");
+    }
+
+    @GetMapping("/list")
+    public R<List<Setmeal>> list(Setmeal setmeal){
+        LambdaQueryWrapper<Setmeal> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(setmeal.getCategoryId()!=null,Setmeal::getCategoryId,setmeal.getCategoryId());
+        queryWrapper.eq(Setmeal::getStatus,1);
+        queryWrapper.orderByDesc(Setmeal::getUpdateTime);
+        List<Setmeal> list = setmealService.list(queryWrapper);
+        return R.success(list);
     }
 }
